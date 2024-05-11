@@ -48,7 +48,7 @@ class UNET_ResidualBlock(nn.Module):
         merged = self.conv_merged(merged)
         return merged + self.residual_layer(residue)
 class UNET_AttentionBlock(nn.Module):
-    def __init__(self,n_head:int, n_embd: int, d_context = 768):
+    def __init__(self,n_head:int, n_embd: int, d_context = 512):
         super().__init__()
         channels = n_head * n_embd 
 
