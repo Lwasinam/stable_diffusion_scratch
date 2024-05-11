@@ -13,7 +13,7 @@ import random
 from configuration import get_config
 from diffusion import Diffusion 
 from encoder import VAE_Encoder
-device = 'cpu'
+device = 'cuda'
 
 cfg = get_config()
 def get_dataset(tokenizer, cfg):
