@@ -19,7 +19,7 @@ cfg = get_config()
 def get_dataset(tokenizer, cfg):
     dataset = load_dataset("diffusers/pokemon-gpt4-captions")
 
-    train_ds = ImageDataset(train_ds, tokenizer )
+    train_ds = ImageDataset(dataset, tokenizer )
 
     training_dataloader = DataLoader(train_ds, batch_size = cfg['batch_size'], shuffle = True)
     print('Loaded dataset')
