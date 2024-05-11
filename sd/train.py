@@ -1,5 +1,5 @@
 from dataset import ImageDataset
-from transformers import CLIPTokenizer
+from transformers import CLIPTokenizer, CLIPTextModelWithProjection
 import model_loader
 from ddpm import DDPMSampler
 from pipeline import get_time_embedding
@@ -11,11 +11,13 @@ from tqdm import tqdm
 import numpy as np
 import random
 from config import get_config
+from diffusion import Diffusion 
+from encoder import VAE_Encoder
 device = 'cpu'
 
 cfg = get_config()
 def get_dataset(tokenizer, cfg):
-    train_ds = dataset = load_dataset('imagefolder', data_dir='C:/AI/projects/vision_model_pretrained/validation/content/train')
+    dataset = load_dataset("diffusers/pokemon-gpt4-captions")
 
     train_ds = ImageDataset(train_ds, tokenizer )
 
@@ -30,20 +32,20 @@ def get_tokenizer():
     return tokenizer
 
 
-def get_model():
-    model_file = "../STABLE_DIFFUSION/data/v1-5-pruned-emaonly.ckpt"
-    models = model_loader.preload_models_from_standard_weights(model_file, device)
-    print('Loaded models')
-    return models
+# def get_model():
+#     model_file = "../STABLE_DIFFUSION/data/v1-5-pruned-emaonly.ckpt"
+#     models = model_loader.preload_models_from_standard_weights(model_file, device)
+#     print('Loaded models')
+#     return models
 
 def train_model(cfg):
     batch_size = 3
     tokenizer = get_tokenizer()
     training_dataloader = get_dataset(tokenizer, cfg)
     models = get_model()
-    model = models['diffusion'].to(device)
-    encoder = models['encoder'].to(device)
-    clip = models['clip'].to(device)
+    model = Diffusion().to(device)
+    encoder = VAE_Encoder.to(device)
+    clip = CLIPTextModelWithProjection.from_pretrained("openai/clip-vit-large-patch14").to(device)
     
     seed = 42
 
@@ -79,7 +81,7 @@ def train_model(cfg):
             time_embedding = get_time_embedding(timestep).to(device)
 
            
-            context = clip(tokens)
+            context = clip(**tokens)
             # print(latents.shape)
 
             predicted_noise = model(latents, context, time_embedding)
