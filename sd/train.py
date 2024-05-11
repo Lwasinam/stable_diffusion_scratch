@@ -10,7 +10,7 @@ import torch.nn as nn
 from tqdm import tqdm
 import numpy as np
 import random
-from config import get_config
+from configuration import get_config
 from diffusion import Diffusion 
 from encoder import VAE_Encoder
 device = 'cpu'
