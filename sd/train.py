@@ -44,7 +44,7 @@ def train_model(cfg):
     training_dataloader = get_dataset(tokenizer, cfg)
     # models = get_model()
     model = Diffusion().to(device)
-    encoder = VAE_Encoder.to(device)
+    encoder = VAE_Encoder().to(device)
     clip = CLIPTextModelWithProjection.from_pretrained("openai/clip-vit-large-patch14").to(device)
     
     seed = 42
