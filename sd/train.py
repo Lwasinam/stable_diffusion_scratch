@@ -26,7 +26,7 @@ def get_dataset(tokenizer, cfg):
     return training_dataloader
 
 def get_tokenizer():
-    tokenizer = CLIPTokenizer('content/stable_diffusion_scratch/data/vocab.json', merges_file = '../STABLE_DIFFUSION/data/merges.txt')
+    tokenizer = CLIPTokenizer('/content/stable_diffusion_scratch/data/vocab.json', merges_file = '../STABLE_DIFFUSION/data/merges.txt')
 
     print('Loaded tokenizer')
     return tokenizer
