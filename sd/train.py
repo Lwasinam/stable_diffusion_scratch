@@ -82,7 +82,7 @@ def train_model(cfg):
 
            
             context = clip(tokens)
-            print(context.)
+           
             # print(latents.shape)
 
             predicted_noise = model(latents, context.text_embeds, time_embedding)
