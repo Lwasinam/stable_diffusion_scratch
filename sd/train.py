@@ -81,7 +81,7 @@ def train_model(cfg):
             time_embedding = get_time_embedding(timestep).to(device)
 
            
-            context = clip(**tokens)
+            context = clip(tokens)
             # print(latents.shape)
 
             predicted_noise = model(latents, context, time_embedding)
