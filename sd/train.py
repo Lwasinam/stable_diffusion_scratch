@@ -82,10 +82,10 @@ def train_model(cfg):
 
            
             context = clip(tokens)
-            print(context.shape)
+            print(context.)
             # print(latents.shape)
 
-            predicted_noise = model(latents, context, time_embedding)
+            predicted_noise = model(latents, context.text_embeds, time_embedding)
             # print(predicted_noise.shape)
             # print(noise.shape)
             loss = loss_fn(predicted_noise.reshape(-1, 64 * 64 *4), noise.reshape(-1, 64* 64*4))
