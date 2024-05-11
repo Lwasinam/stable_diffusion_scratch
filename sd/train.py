@@ -77,11 +77,12 @@ def train_model(cfg):
             # print(latents.shape) 
 
             latents = sampler.add_noise(latents, timestep).to(device)
-            print(latents.shape)
+           
             time_embedding = get_time_embedding(timestep).to(device)
 
            
             context = clip(tokens)
+            print(context.shape)
             # print(latents.shape)
 
             predicted_noise = model(latents, context, time_embedding)
