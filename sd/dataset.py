@@ -15,7 +15,7 @@ class ImageDataset(Dataset):
         return len(self.data['train'])
     def __getitem__(self, idx):
         image = self.data['train'][idx]['image']
-        text = 'an image of a puppy' 
+        text = self.data['train'][idx]['text'] 
 
         
 
@@ -31,9 +31,9 @@ class ImageDataset(Dataset):
 
 
                  # convert the prompt into tokens using the tokenizer
-        cond_tokens = self.tokenizer.batch_encode_plus([text], padding = 'max_length', max_length = 77).input_ids
+        cond_tokens = self.tokenizer([text], padding = 'max_length', max_length = 77)
             # (batch_size, seq_len)   
-        cond_tokens = torch.tensor(cond_tokens, dtype= torch.long, device = device)
+        # cond_tokens = torch.tensor(cond_tokens, dtype= torch.long, device = device)
         cond_tokens = cond_tokens.squeeze(0)
         return {
             'image_tensor': input_image_tensor,
