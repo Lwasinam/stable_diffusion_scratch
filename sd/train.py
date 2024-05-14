@@ -97,7 +97,7 @@ def train_model(cfg):
            
             # print(latents.shape)
 
-            predicted_noise = model(noise, torch.randn(1,77,512), torch.rand(1,320))
+            predicted_noise = model(noise, torch.randn(1,77,512).to(device), torch.rand(1,320).to(device))
             # print(predicted_noise.shape)
             # print(noise.shape)
             loss = loss_fn(predicted_noise.reshape(-1, 16 * 16 *4), noise.reshape(-1, 16* 16*4))
