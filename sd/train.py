@@ -77,7 +77,7 @@ def train_model(cfg):
             timestep = timesteps[random.randrange(1000)]
             # forward pass
 
-            noise = torch.randn((cfg['batch_size'], 4, 256//8, 256//8), device = device)
+            noise = torch.randn((cfg['batch_size'], 4, 128//8, 128//8), device = device)
             # print(image.shape)
             # latents = encoder(image, noise)
             
@@ -96,7 +96,7 @@ def train_model(cfg):
             predicted_noise = model(latents, context.text_embeds, time_embedding)
             # print(predicted_noise.shape)
             # print(noise.shape)
-            loss = loss_fn(predicted_noise.reshape(-1, 32 * 32 *4), noise.reshape(-1, 32* 32*4))
+            loss = loss_fn(predicted_noise.reshape(-1, 16 * 16 *4), noise.reshape(-1, 16* 16*4))
             batch_iterator.set_postfix({"loss": f"{loss.item():6.3f}"})
 
             loss.backward()
