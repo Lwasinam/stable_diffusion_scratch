@@ -69,6 +69,8 @@ def train_model(cfg):
 
     for epoch in range(0, 20):
         model.train()
+        clip.eval()
+        encoder.eval()
         batch_iterator = tqdm(training_dataloader, desc=f"Processing Epoch {epoch:02d}")
 
         for batch in batch_iterator:
@@ -86,12 +88,12 @@ def train_model(cfg):
 
             latents = sampler.add_noise(latents, timestep).to(device)
 
-            encoder.to('cpu')
+           
             time_embedding = get_time_embedding(timestep).to(device)
 
            
             context = clip(tokens)
-            clip.to('cpu')
+           
            
             # print(latents.shape)
 
