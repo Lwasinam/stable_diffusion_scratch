@@ -19,7 +19,7 @@ class ImageDataset(Dataset):
 
         
 
-        input_image_tensor = image.resize((512, 512))
+        input_image_tensor = image.resize((256, 256))
         input_image_tensor = np.array(input_image_tensor)
 
         # (Height, Width, Channel)
