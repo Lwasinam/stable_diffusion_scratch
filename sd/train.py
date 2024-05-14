@@ -80,7 +80,8 @@ def train_model(cfg):
             noise = torch.randn((cfg['batch_size'], 4, 512//8, 512//8), device = device)
             # print(image.shape)
             # latents = encoder(image, noise)
-            latents = encoder.encode(image).latent_dist.parameters
+            
+            latents = encoder.encode(image).latent_dist.sample(generator)
             # print(latents.shape) 
 
             latents = sampler.add_noise(latents, timestep).to(device)
