@@ -76,7 +76,7 @@ def train_model(cfg):
         for batch in batch_iterator:
             image = batch['image_tensor'].to(device)
             tokens = batch['text_tokens'].to(device)
-            timestep = timesteps[random.randrange(1000)]
+            # timestep = timesteps[random.randrange(1000)]
             # forward pass
 
             noise = torch.randn((cfg['batch_size'], 4, 128//8, 128//8), device = device)
