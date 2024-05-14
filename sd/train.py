@@ -49,8 +49,8 @@ def train_model(cfg):
     # models = get_model()
     model = Diffusion().to(device)
     # encoder = VAE_Encoder().to(device)
-    clip = CLIPTextModelWithProjection.from_pretrained("openai/clip-vit-base-patch32").to(device)
-    encoder = AutoencoderKL.from_pretrained("CompVis/stable-diffusion-v1-4", subfolder="vae", use_safetensors=True).to(device)
+    # clip = CLIPTextModelWithProjection.from_pretrained("openai/clip-vit-base-patch32").to(device)
+    # encoder = AutoencoderKL.from_pretrained("CompVis/stable-diffusion-v1-4", subfolder="vae", use_safetensors=True).to(device)
 
     
     seed = 42
@@ -65,12 +65,12 @@ def train_model(cfg):
 
     optimizer = torch.optim.Adam(model.parameters(), lr = cfg['lr'])
     loss_fn = nn.CrossEntropyLoss().to(device)
-    timesteps = torch.from_numpy(np.arange(0, 1000)[::-1].copy()).to(device)
+    # timesteps = torch.from_numpy(np.arange(0, 1000)[::-1].copy()).to(device)
 
     for epoch in range(0, 20):
         model.train()
-        clip.eval()
-        encoder.eval()
+        # clip.eval()
+        # encoder.eval()
         batch_iterator = tqdm(training_dataloader, desc=f"Processing Epoch {epoch:02d}")
 
         for batch in batch_iterator:
@@ -80,24 +80,24 @@ def train_model(cfg):
             # forward pass
 
             noise = torch.randn((cfg['batch_size'], 4, 128//8, 128//8), device = device)
-            # print(image.shape)
-            # latents = encoder(image, noise)
+            # # print(image.shape)
+            # # latents = encoder(image, noise)
             
-            latents = encoder.encode(image).latent_dist.sample(generator)
-            # print(latents.shape) 
+            # latents = encoder.encode(image).latent_dist.sample(generator)
+            # # print(latents.shape) 
 
-            latents = sampler.add_noise(latents, timestep).to(device)
-
-           
-            time_embedding = get_time_embedding(timestep).to(device)
+            # latents = sampler.add_noise(latents, timestep).to(device)
 
            
-            context = clip(tokens)
+            # time_embedding = get_time_embedding(timestep).to(device)
+
+           
+            # context = clip(tokens)
            
            
             # print(latents.shape)
 
-            predicted_noise = model(latents, context.text_embeds, time_embedding)
+            predicted_noise = model(noise, torch.randn(1,77,512), torch.rand(1,320))
             # print(predicted_noise.shape)
             # print(noise.shape)
             loss = loss_fn(predicted_noise.reshape(-1, 16 * 16 *4), noise.reshape(-1, 16* 16*4))
