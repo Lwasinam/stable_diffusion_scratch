@@ -14,6 +14,10 @@ from configuration import get_config
 from diffusion import Diffusion 
 from encoder import VAE_Encoder
 device = 'cuda'
+from transformers import CLIPTextModel, CLIPTokenizer
+from diffusers import AutoencoderKL, UNet2DConditionModel, PNDMScheduler
+
+
 
 cfg = get_config()
 def get_dataset(tokenizer, cfg):
@@ -44,8 +48,10 @@ def train_model(cfg):
     training_dataloader = get_dataset(tokenizer, cfg)
     # models = get_model()
     model = Diffusion().to(device)
-    encoder = VAE_Encoder().to(device)
+    # encoder = VAE_Encoder().to(device)
     clip = CLIPTextModelWithProjection.from_pretrained("openai/clip-vit-base-patch32").to(device)
+    encoder = AutoencoderKL.from_pretrained("CompVis/stable-diffusion-v1-4", subfolder="vae", use_safetensors=True).to(device)
+
     
     seed = 42
 
@@ -73,7 +79,8 @@ def train_model(cfg):
 
             noise = torch.randn((cfg['batch_size'], 4, 512//8, 512//8), device = device)
             # print(image.shape)
-            latents = encoder(image, noise)
+            # latents = encoder(image, noise)
+            latents = encoder.encode(image).latent_dist.parameters
             # print(latents.shape) 
 
             latents = sampler.add_noise(latents, timestep).to(device)
